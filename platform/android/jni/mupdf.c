@@ -2973,7 +2973,7 @@ JNI_FN(MuPDFCore_getAllSignature)(JNIEnv * env, jobject thiz, jbyteArray jfieldN
 
 	char ebuf[256] = "Failed";
 
-	char *fieldName = "GDCA";
+	unsigned char *fieldName;
 	int *signNum;
 	unsigned char *signers;
 	int *pageNo;
@@ -2984,7 +2984,7 @@ JNI_FN(MuPDFCore_getAllSignature)(JNIEnv * env, jobject thiz, jbyteArray jfieldN
 		goto exit;
 
 	
-
+	fieldName = (unsigned char*)(*env)->GetByteArrayElements(env,jfieldName, 0);
 	signNum = (unsigned int*)(*env)->GetIntArrayElements(env,jsignNum, 0);
 	signers = (unsigned char*)(*env)->GetByteArrayElements(env,jsigners, 0);
 	rect = (float*)(*env)->GetFloatArrayElements(env,jrect, 0);
