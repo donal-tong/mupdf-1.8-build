@@ -57,7 +57,10 @@
   ../../include/openssl/dh.h ../../include/openssl/sha.h \
   ../../include/openssl/x509_vfy.h ../../include/openssl/pkcs7.h \
   ../../include/openssl/pem.h ../../include/openssl/pem2.h \
-  ../../include/openssl/pkcs12.h ../../generated/gen_adobe_ca.h
+  ../../include/openssl/pkcs12.h ../../include/openssl/ts.h \
+  ../../include/openssl/x509v3.h ../../include/openssl/conf.h \
+  ../../source/pdf/GDCA_CM_api.h ../../source/pdf/gdca_openssl_cert.h \
+  ../../source/pdf/gdca_asn1.h ../../generated/gen_adobe_ca.h
 
 ../../include/mupdf/pdf.h:
 
@@ -260,5 +263,17 @@
 ../../include/openssl/pem2.h:
 
 ../../include/openssl/pkcs12.h:
+
+../../include/openssl/ts.h:
+
+../../include/openssl/x509v3.h:
+
+../../include/openssl/conf.h:
+
+../../source/pdf/GDCA_CM_api.h:
+
+../../source/pdf/gdca_openssl_cert.h:
+
+../../source/pdf/gdca_asn1.h:
 
 ../../generated/gen_adobe_ca.h:

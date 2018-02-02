@@ -61,4 +61,15 @@ int pdf_check_signature(fz_context *ctx, pdf_document *doc, pdf_widget *widget, 
 */
 void pdf_sign_signature(fz_context *ctx, pdf_document *doc, pdf_widget *widget, const char *sigfile, const char *password);
 
+//add by wangshengnan
+int pdf_get_signature_information_ex(fz_context *ctx, pdf_document *doc, pdf_widget *widget, char *file, char *signer, char *signTime,int *hasTs, char *tsTime);
+
+int pdf_get_cert_information_ex(fz_context *ctx, pdf_document *doc, pdf_widget *widget, char *file, char *subject, char *issuer,char *startTime,char *endTime,char *serial,char *alg);
+
+int pdf_get_all_signature_ex(fz_context *ctx, pdf_document *doc, char *file,char *fieldName, int *signNum, char *signers, int *pageNo, float *rect);
+int pdf_get_cert_information_with_rect_ex(fz_context *ctx, pdf_document *doc, char *file, int pageNo, float *rect,char *subject, char *issuer,char *startTime,char *endTime,char *serial,char *alg);
+int pdf_get_signature_information_with_rect_ex(fz_context *ctx, pdf_document *doc, char *file, int pageNo, float *rect, char *signer, char *signTime,int *hasTs, char *tsTime);
+//return 1 为有效
+int pdf_check_signature_with_rect_ex(fz_context *ctx, pdf_document *doc, int pageNo, float *rect, char *file, char *ebuf, int ebufsize);
+int pdf_get_page_size_ex(fz_context *ctx, pdf_document *doc, int pageNo, float *rect);
 #endif

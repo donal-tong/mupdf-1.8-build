@@ -19,6 +19,11 @@ LOCAL_MODULE := ssl
 LOCAL_SRC_FILES := pre-compiled-${PLATFORM}/libssl.a
 include $(PREBUILT_STATIC_LIBRARY)
 
+include $(CLEAR_VARS)
+LOCAL_MODULE := guomiSDK 
+LOCAL_SRC_FILES := pre-compiled-${PLATFORM}/libguomiSDK.so
+include $(PREBUILT_SHARED_LIBRARY)
+
 
 include $(TOP_LOCAL_PATH)/Core.mk
 include $(TOP_LOCAL_PATH)/ThirdParty.mk
@@ -46,7 +51,8 @@ endif
 
 LOCAL_LDLIBS    := -lm -llog -ljnigraphics
 ifdef SSL_BUILD
-LOCAL_STATIC_LIBRARIES += crypto ssl
+LOCAL_STATIC_LIBRARIES += crypto ssl 
+LOCAL_SHARED_LIBRARIES := guomiSDK
 endif
 
 include $(BUILD_SHARED_LIBRARY)

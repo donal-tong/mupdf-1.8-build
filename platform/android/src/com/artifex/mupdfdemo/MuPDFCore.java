@@ -97,6 +97,22 @@ public class MuPDFCore
 
 	public native boolean javascriptSupported();
 
+//签名人 签名时间 是否有时间戳 时间戳时间
+	private native boolean getSignatureInformation(byte[] signer, byte[] signTime,int[] hasTs, byte[] tsTime);
+
+//持有者   颁发者  有效期  序列号  签名算法
+	private native boolean getCertInformation(byte[] subject, byte[] issuer,byte[] startTime, byte[] endTime, byte[] serial, byte[] alg);
+
+//根据域名前缀获取所有签名域坐标和名称 signers用,分割开
+private native boolean getAllSignature(String fieldName,int[] signNum, byte[] signers,int[] pageNo,float[] rect);
+//根据页数和坐标获取签名信息
+private native boolean getSignatureInformationByRect(byte[] signer, byte[] signTime,int[] hasTs, byte[] tsTime,int pageNo,float[] rect);
+//根据页数和坐标获取证书信息
+private native boolean getCertInformationByRect(byte[] subject, byte[] issuer,byte[] startTime, byte[] endTime, byte[] serial, byte[] alg,int pageNo,float[] rect);
+//根据页数获取页面坐标
+private native boolean getPDFRectByPage(int pageNo,float[] rect);
+//根据页面和坐标验签
+private native boolean checkSignatureWithRect(int pageNo,float[] rect);
 	public class Cookie
 	{
 		private final long cookiePtr;

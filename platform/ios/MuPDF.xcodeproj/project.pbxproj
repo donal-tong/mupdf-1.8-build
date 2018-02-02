@@ -19,6 +19,7 @@
 		96C8ED1E1779A9AF00A30AF4 /* libz.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 96C8ED171779A9AE00A30AF4 /* libz.a */; };
 		96E1CDF31779A60700FCF717 /* x_alt_blue.png in Resources */ = {isa = PBXBuildFile; fileRef = 96E1CDEC1779A60700FCF717 /* x_alt_blue.png */; };
 		96E1CDF41779A60700FCF717 /* x_alt_blue@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 96E1CDED1779A60700FCF717 /* x_alt_blue@2x.png */; };
+		9F05FE3520216774007B0446 /* libguomiSDK.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 9F05FE3420216774007B0446 /* libguomiSDK.a */; };
 		9F4A366B1FFE06DB00506229 /* libcrypto.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 9F4A36691FFE06DA00506229 /* libcrypto.a */; };
 		9F4A366C1FFE06DB00506229 /* libssl.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 9F4A366A1FFE06DB00506229 /* libssl.a */; };
 		DA0354EB18FFF48400EE31BA /* MuPrintPageRenderer.m in Sources */ = {isa = PBXBuildFile; fileRef = DA0354EA18FFF48400EE31BA /* MuPrintPageRenderer.m */; };
@@ -85,6 +86,7 @@
 		96C8ED171779A9AE00A30AF4 /* libz.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libz.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		96E1CDEC1779A60700FCF717 /* x_alt_blue.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = x_alt_blue.png; sourceTree = "<group>"; };
 		96E1CDED1779A60700FCF717 /* x_alt_blue@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "x_alt_blue@2x.png"; sourceTree = "<group>"; };
+		9F05FE3420216774007B0446 /* libguomiSDK.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libguomiSDK.a; sourceTree = "<group>"; };
 		9F4A36691FFE06DA00506229 /* libcrypto.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libcrypto.a; sourceTree = "<group>"; };
 		9F4A366A1FFE06DB00506229 /* libssl.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libssl.a; sourceTree = "<group>"; };
 		DA012CA218803D1C00E47712 /* MuUpdater.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = MuUpdater.h; path = Classes/MuUpdater.h; sourceTree = "<group>"; };
@@ -152,14 +154,15 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				9F4A366B1FFE06DB00506229 /* libcrypto.a in Frameworks */,
+				9F4A366C1FFE06DB00506229 /* libssl.a in Frameworks */,
 				96C8ED1C1779A9AF00A30AF4 /* libmupdf.a in Frameworks */,
 				96C8ED1B1779A9AF00A30AF4 /* libmujs.a in Frameworks */,
-				9F4A366C1FFE06DB00506229 /* libssl.a in Frameworks */,
-				9F4A366B1FFE06DB00506229 /* libcrypto.a in Frameworks */,
 				96C8ED181779A9AE00A30AF4 /* libfreetype.a in Frameworks */,
 				96C8ED191779A9AE00A30AF4 /* libjbig2dec.a in Frameworks */,
 				96C8ED1A1779A9AF00A30AF4 /* libjpeg.a in Frameworks */,
 				96C8ED1D1779A9AF00A30AF4 /* libopenjpeg.a in Frameworks */,
+				9F05FE3520216774007B0446 /* libguomiSDK.a in Frameworks */,
 				96C8ED1E1779A9AF00A30AF4 /* libz.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -170,6 +173,7 @@
 		968E1E341779A54F0050CEA3 = {
 			isa = PBXGroup;
 			children = (
+				9F05FE3420216774007B0446 /* libguomiSDK.a */,
 				9F4A36691FFE06DA00506229 /* libcrypto.a */,
 				9F4A366A1FFE06DB00506229 /* libssl.a */,
 				DA1C68C317E8969C0061F586 /* common.m */,

@@ -2869,3 +2869,278 @@ JNI_FN(MuPDFCore_getSepInternal)(JNIEnv *env, jobject thiz, int page, int sep)
 
 	return (*env)->NewObject(env, sepClass, ctor, jname, bgra, cmyk);
 }
+
+JNIEXPORT jboolean JNICALL
+JNI_FN(MuPDFCore_getSignatureInformation)(JNIEnv * env, jobject thiz, jbyteArray jsigner, jbyteArray jsignTime, jintArray jhasTs, jbyteArray jtsTime)
+{
+	globals *glo = get_globals(env, thiz);
+	fz_context *ctx = glo->ctx;
+	pdf_document *idoc = pdf_specifics(ctx, glo->doc);
+	pdf_widget *focus;
+	char ebuf[256] = "Failed";
+
+	unsigned char *signer;
+	unsigned char * signTime;
+	int *hasTs;
+	unsigned char * tsTime;
+	jboolean res = JNI_FALSE;
+
+	if (idoc == NULL)
+		goto exit;
+
+	focus = pdf_focused_widget(ctx, idoc);
+
+	if (focus == NULL)
+		goto exit;
+
+	signer = (unsigned char*)(*env)->GetByteArrayElements(env,jsigner, 0);
+	signTime = (unsigned char*)(*env)->GetByteArrayElements(env,jsignTime, 0);
+	hasTs = (unsigned int*)(*env)->GetIntArrayElements(env,jhasTs, 0);
+	tsTime = (unsigned char*)(*env)->GetByteArrayElements(env,jtsTime, 0);
+	if (signer == NULL || signTime == NULL || hasTs == NULL || tsTime == NULL)
+		return JNI_FALSE;
+	
+	if (pdf_get_signature_information_ex(ctx, idoc, focus, glo->current_path, signer, signTime, hasTs, tsTime))
+	{
+		res = JNI_TRUE;
+	}
+	(*env)->ReleaseByteArrayElements(env,jsigner,(jbyte*)signer,0);
+	(*env)->ReleaseByteArrayElements(env,jsignTime,(jbyte*)signTime,0);
+	(*env)->ReleaseByteArrayElements(env,jtsTime,(jbyte*)tsTime,0);
+	(*env)->ReleaseIntArrayElements(env,jhasTs,(jint*)hasTs,0);
+
+exit:
+	return res;
+}
+
+JNIEXPORT jboolean JNICALL
+JNI_FN(MuPDFCore_getCertInformation)(JNIEnv * env, jobject thiz, jbyteArray jsubject, jbyteArray jissuer, jbyteArray jstartTime, jbyteArray jendTime, jbyteArray jserial, jbyteArray jalg)
+{
+	globals *glo = get_globals(env, thiz);
+	fz_context *ctx = glo->ctx;
+	pdf_document *idoc = pdf_specifics(ctx, glo->doc);
+	pdf_widget *focus;
+	char ebuf[256] = "Failed";
+
+	unsigned char *subject;
+	unsigned char *issuer;
+	unsigned char *startTime;
+	unsigned char *endTime;
+	unsigned char *serial;
+	unsigned char *alg;
+	jboolean res = JNI_FALSE;
+	
+	if (idoc == NULL)
+		goto exit;
+
+	focus = pdf_focused_widget(ctx, idoc);
+
+	if (focus == NULL)
+		goto exit;
+
+	subject = (unsigned char*)(*env)->GetByteArrayElements(env,jsubject, 0);
+	issuer = (unsigned char*)(*env)->GetByteArrayElements(env,jissuer, 0);
+	startTime = (unsigned char*)(*env)->GetByteArrayElements(env,jstartTime, 0);
+	endTime = (unsigned char*)(*env)->GetByteArrayElements(env,jendTime, 0);
+	serial = (unsigned char*)(*env)->GetByteArrayElements(env,jserial, 0);
+	alg = (unsigned char*)(*env)->GetByteArrayElements(env,jalg, 0);
+	if (subject == NULL || issuer == NULL || startTime == NULL || endTime == NULL || serial == NULL || alg == NULL)
+		return JNI_FALSE;
+
+	if (pdf_get_cert_information_ex(ctx, idoc, focus, glo->current_path, subject, issuer,startTime,endTime,serial,alg))
+	{
+		res = JNI_TRUE;;
+	}
+
+	(*env)->ReleaseByteArrayElements(env,jsubject,(jbyte*)subject,0);
+	(*env)->ReleaseByteArrayElements(env,jissuer,(jbyte*)issuer,0);
+	(*env)->ReleaseByteArrayElements(env,jstartTime,(jbyte*)startTime,0);
+
+	(*env)->ReleaseByteArrayElements(env,jendTime,(jbyte*)endTime,0);
+	(*env)->ReleaseByteArrayElements(env,jserial,(jbyte*)serial,0);
+	(*env)->ReleaseByteArrayElements(env,jalg,(jbyte*)alg,0);
+
+exit:
+	return res;
+}
+
+JNIEXPORT jboolean JNICALL
+JNI_FN(MuPDFCore_getAllSignature)(JNIEnv * env, jobject thiz, jbyteArray jfieldName, jintArray jsignNum, jbyteArray jsigners,jintArray jpageNo, jfloatArray jrect)
+{
+	globals *glo = get_globals(env, thiz);
+	fz_context *ctx = glo->ctx;
+	pdf_document *idoc = pdf_specifics(ctx, glo->doc);
+
+	char ebuf[256] = "Failed";
+
+	char *fieldName = "GDCA";
+	int *signNum;
+	unsigned char *signers;
+	int *pageNo;
+	float *rect;
+	jboolean res = JNI_FALSE;
+
+	if (idoc == NULL)
+		goto exit;
+
+	
+
+	signNum = (unsigned int*)(*env)->GetIntArrayElements(env,jsignNum, 0);
+	signers = (unsigned char*)(*env)->GetByteArrayElements(env,jsigners, 0);
+	rect = (float*)(*env)->GetFloatArrayElements(env,jrect, 0);
+	pageNo = (unsigned int*)(*env)->GetIntArrayElements(env,jpageNo, 0);
+	LOGE("pass field");
+	if (fieldName == NULL || signNum == NULL || signers == NULL || rect == NULL)
+		return JNI_FALSE;
+
+    LOGE("field name %s",fieldName);
+
+	if (pdf_get_all_signature_ex(ctx, idoc, glo->current_path, fieldName, signNum, signers,pageNo, rect))
+	{
+		res = JNI_TRUE;;
+	}
+	(*env)->ReleaseByteArrayElements(env,jsigners,(jbyte*)signers,0);
+	(*env)->ReleaseIntArrayElements(env, jsignNum, (jint *)signNum, 0);
+	(*env)->ReleaseIntArrayElements(env, jpageNo, (jint *)pageNo , 0);
+	(*env)->ReleaseFloatArrayElements(env, jrect, (jfloat *)rect, 0);
+exit:
+	return res;
+}
+
+JNIEXPORT jboolean JNICALL
+JNI_FN(MuPDFCore_getSignatureInformationByRect)(JNIEnv * env, jobject thiz, jbyteArray jsigner, jbyteArray jsignTime, jintArray jhasTs, jbyteArray jtsTime,int pageNo,jfloatArray rect)
+{
+	globals *glo = get_globals(env, thiz);
+	fz_context *ctx = glo->ctx;
+	pdf_document *idoc = pdf_specifics(ctx, glo->doc);
+	
+	char ebuf[256] = "Failed";
+
+	unsigned char *signer;
+	unsigned char * signTime;
+	int *hasTs;
+	unsigned char * tsTime;
+	jboolean res = JNI_FALSE;
+
+	if (idoc == NULL)
+		goto exit;
+
+	signer = (unsigned char*)(*env)->GetByteArrayElements(env,jsigner, 0);
+	signTime = (unsigned char*)(*env)->GetByteArrayElements(env,jsignTime, 0);
+	hasTs = (unsigned int*)(*env)->GetIntArrayElements(env,jhasTs, 0);
+	tsTime = (unsigned char*)(*env)->GetByteArrayElements(env,jtsTime, 0);
+
+    float* frame = (float*)(*env)->GetFloatArrayElements(env,rect,0);
+
+	if (signer == NULL || signTime == NULL || hasTs == NULL || tsTime == NULL)
+		return JNI_FALSE;
+	
+	if (pdf_get_signature_information_with_rect_ex(ctx, idoc, glo->current_path,pageNo,frame, signer, signTime, hasTs, tsTime))
+	{
+		res = JNI_TRUE;
+	}
+	(*env)->ReleaseByteArrayElements(env,jsigner,(jbyte*)signer,0);
+	(*env)->ReleaseByteArrayElements(env,jsignTime,(jbyte*)signTime,0);
+	(*env)->ReleaseByteArrayElements(env,jtsTime,(jbyte*)tsTime,0);
+	(*env)->ReleaseIntArrayElements(env, jhasTs, (jint *)hasTs, 0);
+
+exit:
+	return res;
+}
+
+JNIEXPORT jboolean JNICALL
+JNI_FN(MuPDFCore_getCertInformationByRect)(JNIEnv * env, jobject thiz, jbyteArray jsubject, jbyteArray jissuer, jbyteArray jstartTime, jbyteArray jendTime, jbyteArray jserial, jbyteArray jalg,int pageNo,jfloatArray rect)
+{
+	globals *glo = get_globals(env, thiz);
+	fz_context *ctx = glo->ctx;
+	pdf_document *idoc = pdf_specifics(ctx, glo->doc);
+
+	char ebuf[256] = "Failed";
+
+	unsigned char *subject;
+	unsigned char *issuer;
+	unsigned char *startTime;
+	unsigned char *endTime;
+	unsigned char *serial;
+	unsigned char *alg;
+	jboolean res = JNI_FALSE;
+	
+	if (idoc == NULL)
+		goto exit;
+
+	
+	subject = (unsigned char*)(*env)->GetByteArrayElements(env,jsubject, 0);
+	issuer = (unsigned char*)(*env)->GetByteArrayElements(env,jissuer, 0);
+	startTime = (unsigned char*)(*env)->GetByteArrayElements(env,jstartTime, 0);
+	endTime = (unsigned char*)(*env)->GetByteArrayElements(env,jendTime, 0);
+	serial = (unsigned char*)(*env)->GetByteArrayElements(env,jserial, 0);
+	alg = (unsigned char*)(*env)->GetByteArrayElements(env,jalg, 0);
+	float* frame = (float*)(*env)->GetFloatArrayElements(env,rect,0);
+	if (subject == NULL || issuer == NULL || startTime == NULL || endTime == NULL || serial == NULL || alg == NULL)
+		return JNI_FALSE;
+
+	if (pdf_get_cert_information_with_rect_ex(ctx, idoc, glo->current_path,pageNo,frame, subject, issuer,startTime,endTime,serial,alg))
+	{
+		res = JNI_TRUE;
+	}
+
+	(*env)->ReleaseByteArrayElements(env,jsubject,(jbyte*)subject,0);
+	(*env)->ReleaseByteArrayElements(env,jissuer,(jbyte*)issuer,0);
+	(*env)->ReleaseByteArrayElements(env,jstartTime,(jbyte*)startTime,0);
+
+	(*env)->ReleaseByteArrayElements(env,jendTime,(jbyte*)endTime,0);
+	(*env)->ReleaseByteArrayElements(env,jserial,(jbyte*)serial,0);
+	(*env)->ReleaseByteArrayElements(env,jalg,(jbyte*)alg,0);
+
+exit:
+	return res;
+}
+JNIEXPORT jboolean JNICALL
+JNI_FN(MuPDFCore_getPDFRectByPage)(JNIEnv * env, jobject thiz, int pageNo,jfloatArray rect)
+{
+	globals *glo = get_globals(env, thiz);
+	fz_context *ctx = glo->ctx;
+	pdf_document *idoc = pdf_specifics(ctx, glo->doc);
+	char ebuf[256] = "Failed";
+	jboolean res = JNI_FALSE;
+	
+	
+	if (idoc == NULL)
+		goto exit;
+
+	float* frame = (float*)(*env)->GetFloatArrayElements(env,rect,0);
+
+	if (pdf_get_page_size_ex(ctx, idoc, pageNo,frame))
+	{
+		res = JNI_TRUE;
+	}
+	(*env)->ReleaseFloatArrayElements(env,rect,(jfloat*)frame,0);
+exit:
+	return res;
+}
+
+JNIEXPORT jboolean JNICALL
+JNI_FN(MuPDFCore_checkSignatureWithRect)(JNIEnv * env, jobject thiz, int pageNo,jfloatArray rect)
+{
+	globals *glo = get_globals(env, thiz);
+	fz_context *ctx = glo->ctx;
+	pdf_document *idoc = pdf_specifics(ctx, glo->doc);
+	char ebuf[256] = "Failed";
+	jboolean res = JNI_FALSE;
+	
+	
+	if (idoc == NULL)
+		goto exit;
+
+	float* frame = (float*)(*env)->GetFloatArrayElements(env,rect,0);
+
+	if (pdf_check_signature_with_rect_ex(ctx, idoc, pageNo,frame,glo->current_path,ebuf,256))
+	{
+		res = JNI_TRUE;
+	}
+	
+exit:
+	return res;
+}
+
+
